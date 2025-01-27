@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../../rush-webmap-docker"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
