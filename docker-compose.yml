@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .  # needed to copy /admin/schema.prisma
+      dockerfile: ./app/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - db
+
+  admin:
+    build:
+      context: ./admin
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    depends_on:
+      - db
+
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      env_file: "db/.env"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres-data:
