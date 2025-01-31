@@ -1,9 +1,16 @@
-import { prisma } from '@/lib/prisma'
+import { prisma } from '../lib/prisma'
+
+type User = {
+  name: string;
+  id: string;
+  email: string;
+  password: string;
+  createdAt: Date | null;
+};
 
 export default async function Page() {
-  const users = await prisma.user.findMany();
-  const posts = await prisma.post.findMany();
-  
+  const users: User[] = await prisma.user.findMany();
+
   return (
     <div>
       <h1>Users:</h1>
