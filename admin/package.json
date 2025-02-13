@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "private": true,
   "scripts": {
-    "dev": "keystone dev",
+    "dev": "PORT=8000 keystone dev",
     "start": "keystone start",
     "build": "keystone build"
   },
