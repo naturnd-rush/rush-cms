@@ -1,9 +1,10 @@
 {
   "name": "keystone-app",
   "version": "1.0.3",
+    
   "private": true,
   "scripts": {
-    "dev": "PORT=8000 keystone dev",
+    "dev": "concurrently --prefix-colors \"cyan,magenta\" \"script -q -c 'PORT=8000 keystone dev' /dev/null\" \"wait-on http://localhost:8000 && cp schema.prisma ../app/prisma/schema.prisma\"",
     "start": "keystone start",
     "build": "keystone build"
   },
@@ -14,5 +15,9 @@
     "dotenv": "^16.4.7",
     "react-icons": "^5.4.0",
     "typescript": "^5.5.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "wait-on": "^8.0.2"
   }
 }
