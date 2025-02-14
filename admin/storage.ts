@@ -8,7 +8,8 @@ const {
 } = process.env;
 
 export const storage = {
-  local_icon_svgs: {
+
+  local_images: {
     kind: 'local',
     type: 'file',
     generateUrl: path => `${baseUrl}/images${path}`,
@@ -27,4 +28,5 @@ export const storage = {
     },
     storagePath: 'public/geojson'
   } satisfies StorageConfig
+
 }
