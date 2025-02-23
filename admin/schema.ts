@@ -5,8 +5,8 @@
 // If you want to learn more about how lists are configured, please read
 // - https://keystonejs.com/docs/config/lists
 
-import { group, list } from '@keystone-6/core'
-import { allowAll } from '@keystone-6/core/access'
+import { group, list } from "@keystone-6/core";
+import { allowAll } from "@keystone-6/core/access";
 
 // see https://keystonejs.com/docs/fields/overview for the full list of fields
 //   this is a few common fields for an example
@@ -19,22 +19,22 @@ import {
   relationship,
   text,
   timestamp,
-} from '@keystone-6/core/fields'
+} from "@keystone-6/core/fields";
 
 // the document field is a more complicated field, so it has it's own package
-import { document } from '@keystone-6/fields-document'
+import { document } from "@keystone-6/fields-document";
 // if you want to make your own fields, see https://keystonejs.com/docs/guides/custom-fields
 
 // when using Typescript, you can refine your types to a stricter subset by importing
 // the generated types from '.keystone/types'
-import { type Lists } from '.keystone/types'
+import { type Lists } from ".keystone/types";
 
 // Custom color validation for hex codes
 // Ref: https://stackoverflow.com/questions/1636350/how-to-identify-a-given-string-is-hex-color-format
 const colorValidationMatch = {
   regex: /^#(?:[0-9a-fA-F]{3}){1,2}$/,
-  explanation: `Color must be a hex color in the format #FFF or #FFFFFF`
-}
+  explanation: `Color must be a hex color in the format #FFF or #FFFFFF`,
+};
 
 export const lists = {
   User: list({
@@ -54,18 +54,18 @@ export const lists = {
         validation: { isRequired: true },
         // by adding isIndexed: 'unique', we're saying that no user can have the same
         // email as another user - this may or may not be a good idea for your project
-        isIndexed: 'unique',
+        isIndexed: "unique",
       }),
 
       password: password({ validation: { isRequired: true } }),
 
       // we can use this field to see what Posts this User has authored
       //   more on that in the Post list below
-      posts: relationship({ ref: 'Post.author', many: true }),
+      posts: relationship({ ref: "Post.author", many: true }),
 
       createdAt: timestamp({
         // this sets the timestamp to Date.now() when the user is first created
-        defaultValue: { kind: 'now' },
+        defaultValue: { kind: "now" },
       }),
     },
   }),
@@ -99,13 +99,13 @@ export const lists = {
       // with this field, you can set a User as the author for a Post
       author: relationship({
         // we could have used 'User', but then the relationship would only be 1-way
-        ref: 'User.posts',
+        ref: "User.posts",
 
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
-          displayMode: 'cards',
-          cardFields: ['name', 'email'],
-          inlineEdit: { fields: ['name', 'email'] },
+          displayMode: "cards",
+          cardFields: ["name", "email"],
+          inlineEdit: { fields: ["name", "email"] },
           linkToItem: true,
           inlineConnect: true,
         },
@@ -118,19 +118,19 @@ export const lists = {
       // with this field, you can add some Tags to Posts
       tags: relationship({
         // we could have used 'Tag', but then the relationship would only be 1-way
-        ref: 'Tag.posts',
+        ref: "Tag.posts",
 
         // a Post can have many Tags, not just one
         many: true,
 
         // this is some customisations for changing how this will look in the AdminUI
         ui: {
-          displayMode: 'cards',
-          cardFields: ['name'],
-          inlineEdit: { fields: ['name'] },
+          displayMode: "cards",
+          cardFields: ["name"],
+          inlineEdit: { fields: ["name"] },
           linkToItem: true,
           inlineConnect: true,
-          inlineCreate: { fields: ['name'] },
+          inlineCreate: { fields: ["name"] },
         },
       }),
     },
@@ -153,7 +153,7 @@ export const lists = {
     fields: {
       name: text(),
       // this can be helpful to find out all the Posts associated with a Tag
-      posts: relationship({ ref: 'Post.tags', many: true }),
+      posts: relationship({ ref: "Post.tags", many: true }),
     },
   }),
 
@@ -164,42 +164,65 @@ export const lists = {
       title: text({
         validation: {
           isRequired: true,
-          length: { min: 3, max: 60 }
+          length: { min: 3, max: 60 },
         },
-        isIndexed: 'unique'
+        isIndexed: "unique",
       }),
       description: document({
         // TODO: restrict formatting options, legend descriptions should not support
         // fully complex documents. Limit heading levels, lists perhaps, etc.
         formatting: true,
-        links: true
+        links: true,
       }),
       styles: relationship({
-        ref: 'StyleOnLayer.layer',
+        ref: "StyleOnLayer.layer",
         many: true,
         ui: {
-          displayMode: 'cards',
+          displayMode: "cards",
           linkToItem: true,
-          cardFields: ['style', 'mapAttrKey', 'mapAttrVal', 'mapAttrOper', 'legendText' ],
-          inlineCreate: { fields: ['style', 'mapAttrKey', 'mapAttrVal', 'mapAttrOper', 'legendText' ] },
-          inlineEdit: { fields: ['style', 'mapAttrKey', 'mapAttrVal', 'mapAttrOper', 'legendText' ] }
-        }
+          cardFields: [
+            "style",
+            "mapAttrKey",
+            "mapAttrVal",
+            "mapAttrOper",
+            "legendText",
+          ],
+          inlineCreate: {
+            fields: [
+              "style",
+              "mapAttrKey",
+              "mapAttrVal",
+              "mapAttrOper",
+              "legendText",
+            ],
+          },
+          inlineEdit: {
+            fields: [
+              "style",
+              "mapAttrKey",
+              "mapAttrVal",
+              "mapAttrOper",
+              "legendText",
+            ],
+          },
+        },
       }),
       ...group({
-        label: 'Data Provider',
-        description: 'Select one (only one) of the following options for where the map data for this layer is found.',
+        label: "Data Provider",
+        description:
+          "Select one (only one) of the following options for where the map data for this layer is found.",
         fields: {
           data_GeoJSON: relationship({
-            label: 'Data Provider: GeoJSON File',
-            ref: 'Data_GeoJSON'
+            label: "Data Provider: GeoJSON File",
+            ref: "Data_GeoJSON",
           }),
           data_OpenGreenMap: relationship({
-            label: 'Data Provider: OpenGreenMap',
-            ref: 'Data_OpenGreenMap'
-          })
-        }
-      })
-    }
+            label: "Data Provider: OpenGreenMap",
+            ref: "Data_OpenGreenMap",
+          }),
+        },
+      }),
+    },
   }),
 
   Style: list({
@@ -207,122 +230,122 @@ export const lists = {
     fields: {
       title: text({
         validation: {
-          isRequired: true
+          isRequired: true,
         },
-        isIndexed: 'unique'
+        isIndexed: "unique",
       }),
       ...group({
-        label: 'Stroke Options',
+        label: "Stroke Options",
         fields: {
           stroke: checkbox(),
           // TODO: Custom color field instead of regex hex validation.
           color: text({
-            defaultValue: '#FFF',
+            defaultValue: "#FFF",
             validation: {
-              match: colorValidationMatch
-            }
+              match: colorValidationMatch,
+            },
           }),
           weight: decimal(),
           opacity: decimal(),
           lineCap: text({ db: { isNullable: true } }),
           lineJoin: text({ db: { isNullable: true } }),
           dashArray: text({ db: { isNullable: true } }),
-          dashOffset: text({ db: { isNullable: true } })
-        }
+          dashOffset: text({ db: { isNullable: true } }),
+        },
       }),
       ...group({
-        label: 'Fill Options',
+        label: "Fill Options",
         fields: {
           fill: checkbox(),
           fillColor: text({
-            defaultValue: '#000',
+            defaultValue: "#000",
             validation: {
-              match: colorValidationMatch
-            }
+              match: colorValidationMatch,
+            },
           }),
           fillOpacity: decimal(),
-          fillRule: text({ db: { isNullable: true } })
-        }
+          fillRule: text({ db: { isNullable: true } }),
+        },
       }),
       ...group({
-        label: 'Icon Options',
+        label: "Icon Options",
         fields: {
-          icon: relationship({ ref: 'Icon.styles', many: false }),
+          icon: relationship({ ref: "Icon.styles", many: false }),
           iconOpacity: decimal(),
-        }
+        },
       }),
       ...group({
-        label: 'Event Options',
+        label: "Event Options",
         fields: {
           // Changed _hover to onHover, Prisma error on key name with _
-          onHover: relationship({ ref: 'Style', label: 'Hover Style' })
+          onHover: relationship({ ref: "Style", label: "Hover Style" }),
           // Omitting onActive for now because it is not a LeafletJS event
-        }
+        },
       }),
-      layers: relationship({ ref: 'StyleOnLayer.style', many: true })
-    }
+      layers: relationship({ ref: "StyleOnLayer.style", many: true }),
+    },
   }),
 
   StyleOnLayer: list({
     access: allowAll,
     fields: {
-      layer: relationship({ ref: 'Layer.styles', many: false }),
-      style: relationship({ ref: 'Style.layers', many: false }),
+      layer: relationship({ ref: "Layer.styles", many: false }),
+      style: relationship({ ref: "Style.layers", many: false }),
       mapAttrKey: text(),
       mapAttrVal: text(),
       mapAttrOper: text(),
-      legendText: text()
-    }
+      legendText: text(),
+    },
   }),
 
   Icon: list({
     access: allowAll,
     fields: {
       height: integer({
-        label: 'Height (px)'
+        label: "Height (px)",
       }),
       width: integer({
-        label: 'Width (px)'
+        label: "Width (px)",
       }),
       ...group({
-        label: 'Icon Anchor',
+        label: "Icon Anchor",
         description: `The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location.`,
         fields: {
           anchorX: integer({
-            label: 'Anchor X (px)'
+            label: "Anchor X (px)",
           }),
           anchorY: integer({
-            label: 'Anchor Y (px)'
+            label: "Anchor Y (px)",
           }),
         },
       }),
       bgColor: text({
-        label: 'Background Color',
-        defaultValue: '#000',
+        label: "Background Color",
+        defaultValue: "#000",
         validation: {
-          match: colorValidationMatch
-        }
+          match: colorValidationMatch,
+        },
       }),
       fillColor: text({
-        label: 'Fill Color',
-        defaultValue: '#000',
+        label: "Fill Color",
+        defaultValue: "#000",
         validation: {
-          match: colorValidationMatch
-        }
+          match: colorValidationMatch,
+        },
       }),
       strokeColor: text({
-        label: 'Stroke Color',
-        defaultValue: '#000',
+        label: "Stroke Color",
+        defaultValue: "#000",
         validation: {
-          match: colorValidationMatch
-        }
+          match: colorValidationMatch,
+        },
       }),
       // TODO: Add custom view component to show the svg on the admin page.
       svg: file({
-        storage: 'local_icon_svgs'
+        storage: "local_icon_svgs",
       }),
-      styles: relationship({ ref: 'Style.icon', many: true })
-    }
+      styles: relationship({ ref: "Style.icon", many: true }),
+    },
   }),
 
   // Map Data Providers
@@ -330,19 +353,19 @@ export const lists = {
     access: allowAll,
     fields: {
       geoJSON: file({
-        label: 'GeoJSON File',
-        storage: 'local_geojson',
-      })
-    }
+        label: "GeoJSON File",
+        storage: "local_geojson",
+      }),
+    },
   }),
   Data_OpenGreenMap: list({
     access: allowAll,
     fields: {
       ogmMapId: text({
         validation: {
-          isRequired: true
-        }
-      })
-    }
-  })
-} satisfies Lists
+          isRequired: true,
+        },
+      }),
+    },
+  }),
+} satisfies Lists;

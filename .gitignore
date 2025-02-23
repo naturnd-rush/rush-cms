@@ -132,11 +132,14 @@ dist
 
 # vscode / code-server
 .vscode/*
-*.code-workspace
-admin/*.code-workspace
+**/*.code-workspace
 
 # Local History for Visual Studio Code
 .history/
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# Keystone Generated Schema Files
+admin/schema.graphql
+admin/schema.prisma
