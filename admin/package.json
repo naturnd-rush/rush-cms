@@ -13,5 +13,8 @@
     "@keystone-6/fields-document": "^9.0.0",
     "dotenv": "^16.4.7",
     "typescript": "^5.5.0"
+  },
+  "devDependencies": {
+    "prettier": "3.5.2"
   }
 }

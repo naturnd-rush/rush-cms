@@ -133,6 +133,7 @@ dist
 # vscode / code-server
 .vscode/*
 *.code-workspace
+admin/*.code-workspace
 
 # Local History for Visual Studio Code
 .history/
