@@ -1,32 +1,28 @@
 // Storage configuration
-import { StorageConfig } from "@keystone-6/core/types";
-
-require('dotenv').config({ path: '../.env' });
+import type { StorageConfig } from "@keystone-6/core/types";
 
 const {
-  BASE_URL: baseUrl = 'http://localhost:3000'
-} = process.env;
+  env: { BASE_URL: baseUrl = "http://localhost:3000" },
+} = process;
 
 export const storage = {
-
   local_images: {
-    kind: 'local',
-    type: 'file',
-    generateUrl: path => `${baseUrl}/images${path}`,
+    kind: "local",
+    type: "file",
+    generateUrl: (path) => `${baseUrl}/images${path}`,
     serverRoute: {
-      path: '/images'
+      path: "/images",
     },
-    storagePath: 'public/images'
+    storagePath: "public/images",
   } satisfies StorageConfig,
 
   local_geojson: {
-    kind: 'local',
-    type: 'file',
-    generateUrl: path => `${baseUrl}/geojson${path}`,
+    kind: "local",
+    type: "file",
+    generateUrl: (path) => `${baseUrl}/geojson${path}`,
     serverRoute: {
-      path: '/geojson'
+      path: "/geojson",
     },
-    storagePath: 'public/geojson'
-  } satisfies StorageConfig
-
-}
+    storagePath: "public/geojson",
+  } satisfies StorageConfig,
+};

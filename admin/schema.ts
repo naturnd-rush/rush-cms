@@ -5,9 +5,8 @@
 // If you want to learn more about how lists are configured, please read
 // - https://keystonejs.com/docs/config/lists
 
-import { group, list } from '@keystone-6/core'
-import { allowAll } from '@keystone-6/core/access'
-import { select } from '@keystone-6/core/fields';
+import { group, list } from "@keystone-6/core";
+import { allowAll } from "@keystone-6/core/access";
 import {
   checkbox,
   decimal,
@@ -15,45 +14,51 @@ import {
   integer,
   password,
   relationship,
+  select,
   text,
   timestamp,
-} from '@keystone-6/core/fields'
-import { document } from '@keystone-6/fields-document'
-import { type Lists } from '.keystone/types'
-import path from "path";
-import { availableIcons } from './types/icon'
+} from "@keystone-6/core/fields";
+import { document } from "@keystone-6/fields-document";
+import type { Lists } from ".keystone/types";
+
+// Unused imports from commented out Sam Icon dropdown
+//import path from "path";
+//import { availableIcons } from './types/icon'
 
 // Custom color validation for hex codes
 // Ref: https://stackoverflow.com/questions/1636350/how-to-identify-a-given-string-is-hex-color-format
 const colorValidationMatch = {
   regex: /^#(?:[0-9a-fA-F]{3}){1,2}$/,
-  explanation: `Color must be a hex color in the format #FFF or #FFFFFF`
-}
+  explanation: `Color must be a hex color in the format #FFF or #FFFFFF`,
+};
+
+// Schema Constants
+const LAYER_TITLE_MIN_LENGTH = 3;
+const LAYER_TITLE_MAX_LENGTH = 60;
 
 const SubQuestionDisplay = [
   {
-    label: 'Full-window',
-    value: 'full_window',
+    label: "Full-window",
+    value: "full_window",
   },
   {
-    label: 'Card',
-    value: 'card',
+    label: "Card",
+    value: "card",
   },
 ];
 
 export const lists = {
-
   User: list({
     access: allowAll,
     fields: {
       name: text({ validation: { isRequired: true } }),
       email: text({
         validation: { isRequired: true },
-        isIndexed: 'unique',
+        isIndexed: "unique",
       }),
       password: password({ validation: { isRequired: true } }),
       createdAt: timestamp({
-        defaultValue: { kind: 'now' },
+        defaultValue: { kind: "now" },
       }),
     },
   }),
@@ -62,21 +67,21 @@ export const lists = {
     access: allowAll,
     fields: {
       layer: relationship({
-        ref: 'Layer',
+        ref: "Layer",
         ui: {
-          description: 'The map layer to create a question for.',
+          description: "The map layer to create a question for.",
         },
       }),
-      title: text({validation: { isRequired: true }}),
-      subtitle: text({validation: { isRequired: true }}),
-      content: document({formatting: true, links: true}),
+      title: text({ validation: { isRequired: true } }),
+      subtitle: text({ validation: { isRequired: true } }),
+      content: document({ formatting: true, links: true }),
       subQuestion: relationship({
-        ref: 'SubQuestion', 
+        ref: "SubQuestion",
         ui: {
-          createView: {fieldMode: 'hidden'},
-          description: 
-            'You can add more information about the question here, ' + 
-            'or leave this blank if you want.'
+          createView: { fieldMode: "hidden" },
+          description:
+            "You can add more information about the question here, " +
+            "or leave this blank if you want.",
         },
       }),
     },
@@ -85,30 +90,30 @@ export const lists = {
   SubQuestion: list({
     access: allowAll,
     fields: {
-      subQuestion: relationship({ref: 'SubQuestion'}),
+      subQuestion: relationship({ ref: "SubQuestion" }),
       display: select({
         options: SubQuestionDisplay,
         defaultValue: "FiHome",
         ui: {
-          displayMode: 'segmented-control', 
+          displayMode: "segmented-control",
         },
       }),
-      buttonText: text({validation: { isRequired: true }}),
-      title: text({validation: { isRequired: true }}),
-      subtitle: text({validation: { isRequired: true }}),
-      content: document({formatting: true, links: true}),
+      buttonText: text({ validation: { isRequired: true } }),
+      title: text({ validation: { isRequired: true } }),
+      subtitle: text({ validation: { isRequired: true } }),
+      content: document({ formatting: true, links: true }),
     },
   }),
 
   Initiative: list({
     access: allowAll,
     fields: {
-      title: text({validation: { isRequired: true }}),
+      title: text({ validation: { isRequired: true } }),
       description: document(),
       thumbnail: file({
-        storage: 'local_images',
+        storage: "local_images",
         ui: {
-          description: 'An optional image thumbnail for this initiative.',
+          description: "An optional image thumbnail for this initiative.",
         },
       }),
     },
@@ -117,7 +122,7 @@ export const lists = {
   Tag: list({
     access: allowAll,
     fields: {
-      name: text({validation: { isRequired: true }}),
+      name: text({ validation: { isRequired: true } }),
     },
   }),
 
@@ -125,9 +130,9 @@ export const lists = {
     access: allowAll,
     fields: {
       title: text({
-        validation: { isRequired: true }
+        validation: { isRequired: true },
       }),
-      content: document({formatting: true, links: true}),
+      content: document({ formatting: true, links: true }),
       /**icon: select({
         options: availableIcons.map((icon) => {
           return {
@@ -148,15 +153,15 @@ export const lists = {
     access: allowAll,
     fields: {
       question: relationship({
-        ref: 'Question',
+        ref: "Question",
         ui: {
-          description: 'The linked question.',
+          description: "The linked question.",
         },
       }),
       initiative: relationship({
-        ref: 'Initiative',
+        ref: "Initiative",
         ui: {
-          description: 'The linked initiative.',
+          description: "The linked initiative.",
         },
       }),
     },
@@ -166,21 +171,19 @@ export const lists = {
     access: allowAll,
     fields: {
       initiative: relationship({
-        ref: 'Initiative',
+        ref: "Initiative",
         ui: {
-          description: 'The linked initiative.',
+          description: "The linked initiative.",
         },
       }),
       tag: relationship({
-        ref: 'Tag',
+        ref: "Tag",
         ui: {
-          description: 'The linked tag.',
+          description: "The linked tag.",
         },
       }),
     },
   }),
-
-
 
   /**
   SamIcon: list({
@@ -235,42 +238,65 @@ export const lists = {
       title: text({
         validation: {
           isRequired: true,
-          length: { min: 3, max: 60 }
+          length: { min: LAYER_TITLE_MIN_LENGTH, max: LAYER_TITLE_MAX_LENGTH },
         },
-        isIndexed: 'unique'
+        isIndexed: "unique",
       }),
       description: document({
         // TODO: restrict formatting options, legend descriptions should not support
         // fully complex documents. Limit heading levels, lists perhaps, etc.
         formatting: true,
-        links: true
+        links: true,
       }),
       styles: relationship({
-        ref: 'StyleOnLayer.layer',
+        ref: "StyleOnLayer.layer",
         many: true,
         ui: {
-          displayMode: 'cards',
+          displayMode: "cards",
           linkToItem: true,
-          cardFields: ['style', 'mapAttrKey', 'mapAttrVal', 'mapAttrOper', 'legendText' ],
-          inlineCreate: { fields: ['style', 'mapAttrKey', 'mapAttrVal', 'mapAttrOper', 'legendText' ] },
-          inlineEdit: { fields: ['style', 'mapAttrKey', 'mapAttrVal', 'mapAttrOper', 'legendText' ] }
-        }
+          cardFields: [
+            "style",
+            "mapAttrKey",
+            "mapAttrVal",
+            "mapAttrOper",
+            "legendText",
+          ],
+          inlineCreate: {
+            fields: [
+              "style",
+              "mapAttrKey",
+              "mapAttrVal",
+              "mapAttrOper",
+              "legendText",
+            ],
+          },
+          inlineEdit: {
+            fields: [
+              "style",
+              "mapAttrKey",
+              "mapAttrVal",
+              "mapAttrOper",
+              "legendText",
+            ],
+          },
+        },
       }),
       ...group({
-        label: 'Data Provider',
-        description: 'Select one (only one) of the following options for where the map data for this layer is found.',
+        label: "Data Provider",
+        description:
+          "Select one (only one) of the following options for where the map data for this layer is found.",
         fields: {
           data_GeoJSON: relationship({
-            label: 'Data Provider: GeoJSON File',
-            ref: 'Data_GeoJSON'
+            label: "Data Provider: GeoJSON File",
+            ref: "Data_GeoJSON",
           }),
           data_OpenGreenMap: relationship({
-            label: 'Data Provider: OpenGreenMap',
-            ref: 'Data_OpenGreenMap'
-          })
-        }
-      })
-    }
+            label: "Data Provider: OpenGreenMap",
+            ref: "Data_OpenGreenMap",
+          }),
+        },
+      }),
+    },
   }),
 
   Style: list({
@@ -278,122 +304,122 @@ export const lists = {
     fields: {
       title: text({
         validation: {
-          isRequired: true
+          isRequired: true,
         },
-        isIndexed: 'unique'
+        isIndexed: "unique",
       }),
       ...group({
-        label: 'Stroke Options',
+        label: "Stroke Options",
         fields: {
           stroke: checkbox(),
           // TODO: Custom color field instead of regex hex validation.
           color: text({
-            defaultValue: '#FFF',
+            defaultValue: "#FFF",
             validation: {
-              match: colorValidationMatch
-            }
+              match: colorValidationMatch,
+            },
           }),
           weight: decimal(),
           opacity: decimal(),
           lineCap: text({ db: { isNullable: true } }),
           lineJoin: text({ db: { isNullable: true } }),
           dashArray: text({ db: { isNullable: true } }),
-          dashOffset: text({ db: { isNullable: true } })
-        }
+          dashOffset: text({ db: { isNullable: true } }),
+        },
       }),
       ...group({
-        label: 'Fill Options',
+        label: "Fill Options",
         fields: {
           fill: checkbox(),
           fillColor: text({
-            defaultValue: '#000',
+            defaultValue: "#000",
             validation: {
-              match: colorValidationMatch
-            }
+              match: colorValidationMatch,
+            },
           }),
           fillOpacity: decimal(),
-          fillRule: text({ db: { isNullable: true } })
-        }
+          fillRule: text({ db: { isNullable: true } }),
+        },
       }),
       ...group({
-        label: 'Icon Options',
+        label: "Icon Options",
         fields: {
-          icon: relationship({ ref: 'Icon.styles', many: false }),
+          icon: relationship({ ref: "Icon.styles", many: false }),
           iconOpacity: decimal(),
-        }
+        },
       }),
       ...group({
-        label: 'Event Options',
+        label: "Event Options",
         fields: {
           // Changed _hover to onHover, Prisma error on key name with _
-          onHover: relationship({ ref: 'Style', label: 'Hover Style' })
+          onHover: relationship({ ref: "Style", label: "Hover Style" }),
           // Omitting onActive for now because it is not a LeafletJS event
-        }
+        },
       }),
-      layers: relationship({ ref: 'StyleOnLayer.style', many: true })
-    }
+      layers: relationship({ ref: "StyleOnLayer.style", many: true }),
+    },
   }),
 
   StyleOnLayer: list({
     access: allowAll,
     fields: {
-      layer: relationship({ ref: 'Layer.styles', many: false }),
-      style: relationship({ ref: 'Style.layers', many: false }),
+      layer: relationship({ ref: "Layer.styles", many: false }),
+      style: relationship({ ref: "Style.layers", many: false }),
       mapAttrKey: text(),
       mapAttrVal: text(),
       mapAttrOper: text(),
-      legendText: text()
-    }
+      legendText: text(),
+    },
   }),
 
   Icon: list({
     access: allowAll,
     fields: {
       height: integer({
-        label: 'Height (px)'
+        label: "Height (px)",
       }),
       width: integer({
-        label: 'Width (px)'
+        label: "Width (px)",
       }),
       ...group({
-        label: 'Icon Anchor',
+        label: "Icon Anchor",
         description: `The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location.`,
         fields: {
           anchorX: integer({
-            label: 'Anchor X (px)'
+            label: "Anchor X (px)",
           }),
           anchorY: integer({
-            label: 'Anchor Y (px)'
+            label: "Anchor Y (px)",
           }),
         },
       }),
       bgColor: text({
-        label: 'Background Color',
-        defaultValue: '#000',
+        label: "Background Color",
+        defaultValue: "#000",
         validation: {
-          match: colorValidationMatch
-        }
+          match: colorValidationMatch,
+        },
       }),
       fillColor: text({
-        label: 'Fill Color',
-        defaultValue: '#000',
+        label: "Fill Color",
+        defaultValue: "#000",
         validation: {
-          match: colorValidationMatch
-        }
+          match: colorValidationMatch,
+        },
       }),
       strokeColor: text({
-        label: 'Stroke Color',
-        defaultValue: '#000',
+        label: "Stroke Color",
+        defaultValue: "#000",
         validation: {
-          match: colorValidationMatch
-        }
+          match: colorValidationMatch,
+        },
       }),
       // TODO: Add custom view component to show the svg on the admin page.
       svg: file({
-        storage: 'local_images'
+        storage: "local_images",
       }),
-      styles: relationship({ ref: 'Style.icon', many: true })
-    }
+      styles: relationship({ ref: "Style.icon", many: true }),
+    },
   }),
 
   // Map Data Providers
@@ -401,19 +427,19 @@ export const lists = {
     access: allowAll,
     fields: {
       geoJSON: file({
-        label: 'GeoJSON File',
-        storage: 'local_geojson',
-      })
-    }
+        label: "GeoJSON File",
+        storage: "local_geojson",
+      }),
+    },
   }),
   Data_OpenGreenMap: list({
     access: allowAll,
     fields: {
       ogmMapId: text({
         validation: {
-          isRequired: true
-        }
-      })
-    }
-  })
-} satisfies Lists
+          isRequired: true,
+        },
+      }),
+    },
+  }),
+} satisfies Lists;
