@@ -7,7 +7,7 @@
     "dev": "keystone dev",
     "start": "keystone start",
     "build": "keystone build",
-    "prepare": "husky"
+    "prepare": "cd .. && husky admin/.husky"
   },
   "dependencies": {
     "@keystone-6/auth": "^8.0.0",
