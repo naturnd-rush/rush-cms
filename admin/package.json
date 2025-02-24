@@ -1,10 +1,11 @@
 {
   "name": "keystone-app",
   "version": "1.0.3",
+    
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "keystone dev",
+    "dev": "concurrently --prefix-colors \"cyan,magenta\" \"script -q -c 'PORT=8000 keystone dev' /dev/null\" \"wait-on http://localhost:8000 && cp schema.prisma ../app/prisma/schema.prisma\"",
     "start": "keystone start",
     "build": "keystone build",
     "prepare": "cd .. && husky admin/.husky"
@@ -13,10 +14,10 @@
     "@keystone-6/auth": "^8.0.0",
     "@keystone-6/core": "^6.0.0",
     "@keystone-6/fields-document": "^9.0.0",
-    "dotenv": "^16.4.7",
-    "typescript": "^5.7.3"
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
+    "typescript": "^5.7.3",
     "@eslint/js": "9.21.0",
     "@types/eslint-config-prettier": "^6.11.3",
     "eslint": "9.21.0",
@@ -25,9 +26,12 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "3.5.2",
-    "typescript-eslint": "8.24.1"
+    "typescript-eslint": "8.24.1",
+    "concurrently": "^9.1.2",
+    "wait-on": "^8.0.2",
+    "react-icons": "^5.4.0"
   },
   "lint-staged": {
-    "**/*.{ts,tsx,js,jsx,mjs}": ["eslint --fix", "prettier --write --ignore-unknown"]
+    "**/*.{ts,tsx,js,jsx,mjs}": ["eslint --fix", "prettier --write --ignore-unknown"]  
   }
 }

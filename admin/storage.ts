@@ -6,7 +6,7 @@ const {
 } = process;
 
 export const storage = {
-  local_icon_svgs: {
+  local_images: {
     kind: "local",
     type: "file",
     generateUrl: (path) => `${baseUrl}/images${path}`,

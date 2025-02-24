@@ -5,8 +5,9 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "jsx": "react",
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": true
   }
 }
