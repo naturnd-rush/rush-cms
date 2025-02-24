@@ -5,7 +5,7 @@
 // Keystone imports the default export of this file, expecting a Keystone configuration object
 //   you can find out more at https://keystonejs.com/docs/apis/config
 
-require("dotenv").config({ path: "../.env" });
+import "./env.ts";
 
 import { config } from "@keystone-6/core";
 
@@ -19,16 +19,18 @@ import { withAuth, session } from "./auth";
 // to keep this file tidy, we define our storage buckets in a different file
 import { storage } from "./storage";
 
-let db_url = "NOT FOUND";
+let dbURL = "NOT FOUND";
 if (process.env.DATABASE_URL !== undefined) {
-  db_url = process.env.DATABASE_URL;
+  ({
+    env: { DATABASE_URL: dbURL },
+  } = process);
 }
 
 export default withAuth(
   config({
     db: {
       provider: "postgresql",
-      url: db_url,
+      url: dbURL,
     },
     lists,
     session,

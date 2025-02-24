@@ -1,9 +1,9 @@
 // Storage configuration
-import { StorageConfig } from "@keystone-6/core/types";
+import type { StorageConfig } from "@keystone-6/core/types";
 
-require("dotenv").config({ path: "../.env" });
-
-const { BASE_URL: baseUrl = "http://localhost:3000" } = process.env;
+const {
+  env: { BASE_URL: baseUrl = "http://localhost:3000" },
+} = process;
 
 export const storage = {
   local_icon_svgs: {

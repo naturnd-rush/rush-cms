@@ -27,7 +27,7 @@ import { document } from "@keystone-6/fields-document";
 
 // when using Typescript, you can refine your types to a stricter subset by importing
 // the generated types from '.keystone/types'
-import { type Lists } from ".keystone/types";
+import type { Lists } from ".keystone/types";
 
 // Custom color validation for hex codes
 // Ref: https://stackoverflow.com/questions/1636350/how-to-identify-a-given-string-is-hex-color-format
@@ -35,6 +35,10 @@ const colorValidationMatch = {
   regex: /^#(?:[0-9a-fA-F]{3}){1,2}$/,
   explanation: `Color must be a hex color in the format #FFF or #FFFFFF`,
 };
+
+// Schema Constants
+const LAYER_TITLE_MIN_LENGTH = 3;
+const LAYER_TITLE_MAX_LENGTH = 60;
 
 export const lists = {
   User: list({
@@ -85,13 +89,6 @@ export const lists = {
       //   you can find out more at https://keystonejs.com/docs/guides/document-fields
       content: document({
         formatting: true,
-        layouts: [
-          [1, 1],
-          [1, 1, 1],
-          [2, 1],
-          [1, 2],
-          [1, 2, 1],
-        ],
         links: true,
         dividers: true,
       }),
@@ -164,7 +161,7 @@ export const lists = {
       title: text({
         validation: {
           isRequired: true,
-          length: { min: 3, max: 60 },
+          length: { min: LAYER_TITLE_MIN_LENGTH, max: LAYER_TITLE_MAX_LENGTH },
         },
         isIndexed: "unique",
       }),
